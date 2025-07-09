@@ -1,63 +1,36 @@
 package array;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class FindPairs {
 
-    // Binary search function
-    public static int binarySearch(int[] arr, int l, int r,
-                                   int x)
-    {
-        while (l <= r) {
-            int m = l + (r - l) / 2;
-            if (arr[m] == x)
-                return m;
-            if (arr[m] < x)
-                l = m + 1;
-            else
-                r = m - 1;
-        }
-        return -1;
-    }
-
-    // Function to find pairs in two arrays whose sum equals
-    // a given value
+    // Function to find all pairs in both arrays
+    // whose sum is equal to given value x
     public static void findPairs(int[] arr1, int[] arr2,
                                  int n, int m, int x)
     {
-        // Sort the first array in ascending order
-        Arrays.sort(arr1);
+        // Insert all elements of first array in a hash
+        HashMap<Integer, Integer> s = new HashMap<Integer, Integer>();
 
-        // Iterate through the second array
-        for (int i = 0; i < m; i++) {
+        for (int i = 0; i < n; i++)
+            s.put(arr1[i], 0);
 
-            // Calculate the complement value needed to
-            // reach the target sum
-            int complement = x - arr2[i];
-
-            // Perform binary search on the sorted first
-            // array to find the complement
-            if (binarySearch(arr1, 0, n - 1, complement)
-                    != -1) {
-
-                // If the complement is found, print the
-                // pair
-                System.out.println(complement + " "
-                        + arr2[i]);
-            }
-        }
+        // Subtract sum from second array elements one
+        // by one and check it's present in array first
+        // or not
+        for (int j = 0; j < m; j++)
+            if (s.containsKey(x - arr2[j]))
+                System.out.println(x - arr2[j] + " " + arr2[j]);
     }
 
+    /* Driver program to test above function */
     public static void main(String[] args)
     {
-        // Example arrays and target value
-        int[] arr1 = { 1, 2, 3, 7, 5, 4 };
-        int[] arr2 = { 0, 7, 4, 3, 2, 1 };
-        int n = arr1.length;
-        int m = arr2.length;
+        int[] arr1 = { 1, 0, -4, 7, 6, 4 };
+        int[] arr2 = { 0, 2, 4, -3, 2, 1 };
         int x = 8;
 
-        // Find and print pairs with sum equal to x
-        findPairs(arr1, arr2, n, m, x);
+        findPairs(arr1, arr2, arr1.length, arr2.length, x);
     }
 }
